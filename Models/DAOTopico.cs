@@ -63,10 +63,10 @@ namespace Forum.Models
                 cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "Insert into topicoforum(titulo, descricao, datacadastro) values(@t, @d, @h)";
-                cmd.Parameters.AddWithValue("@n", cidades.Nome);
-                cmd.Parameters.AddWithValue("@e", cidades.Estado);
-                cmd.Parameters.AddWithValue("@h", cidades.Habitantes);
+                cmd.CommandText = "Insert into topicoforum(titulo, descricao, datacadastro) values(@t, @des, @dc)";
+                cmd.Parameters.AddWithValue("@t", topico.Titulo);
+                cmd.Parameters.AddWithValue("@des", topico.Descricao);
+                cmd.Parameters.AddWithValue("@dc", topico.DataCadastro);
 
                 int r = cmd.ExecuteNonQuery();
                 if(r > 0)
@@ -83,7 +83,7 @@ namespace Forum.Models
             return resultado;
         }
 
-        public string Editar(Cidades cidade){
+        public string Editar(Topico topico){
             SqlConnection con = new SqlConnection(conexao);
 
             string msg;
@@ -91,11 +91,11 @@ namespace Forum.Models
             try{
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = con;
-                cmd.CommandText = "Update Cidades set nome = @n, estado = @e, habitantes = @h where id = @id";
-                cmd.Parameters.AddWithValue("@n", cidade.Nome);
-                cmd.Parameters.AddWithValue("@e", cidade.Estado);
-                cmd.Parameters.AddWithValue("@h", cidade.Habitantes);
-                cmd.Parameters.AddWithValue("@id", cidade.Id);
+                cmd.CommandText = "Update topicoforum set titulo = @t, descricao = @des where id = @id";
+                cmd.Parameters.AddWithValue("@t", topico.Titulo);
+                cmd.Parameters.AddWithValue("@des", topico.Descricao);
+                //cmd.Parameters.AddWithValue("@dc", topico.DataCadastro);
+                cmd.Parameters.AddWithValue("@id", topico.Id);
                 con.Open();
                 int r = cmd.ExecuteNonQuery();
                 if(r > 0){
@@ -126,7 +126,7 @@ namespace Forum.Models
                 cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "Delete from Cidades where id = @i";
+                cmd.CommandText = "Delete from topicoforum where id = @i";
                 cmd.Parameters.AddWithValue("@i", id);
 
                 int r = cmd.ExecuteNonQuery();
@@ -143,6 +143,5 @@ namespace Forum.Models
             }
             return resultado;
         }
-    }
     }
 }
