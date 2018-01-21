@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Forum.Models
-{
-    public class DAOTopico
-    {
+namespace Forum.Models {
+    public class DAOTopico{
         SqlConnection con = null;
         SqlCommand cmd = null;
 
         SqlDataReader rd = null;
 
         string conexao = @"Data Source = .\SqlExpress; Initial Catalog = Forum; user id=sa;password=senai@123";
-        public List<Topico> Listar()
-        {
+        public List<Topico> Listar(){
             List<Topico> topicos = new List<Topico>();
-            try
-            {
+            try{
                 con = new SqlConnection();
                 con.ConnectionString = conexao;
                 con.Open();
@@ -26,38 +22,28 @@ namespace Forum.Models
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "Select * from Topico";
                 rd = cmd.ExecuteReader();
-                while (rd.Read())
-                {
-                    topicos.Add(new Topico()
-                    {
+                while (rd.Read()){
+                    topicos.Add(new Topico(){
                         Id = rd.GetInt32(0),
                         Titulo = rd.GetString(1),
                         Descricao = rd.GetString(2),
                         DataCadastro = rd.GetDateTime(3)
                     });
                 }
-            }
-            catch (SqlException se)
-            {
-                throw new Exception(se.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            finally
-            {
+            }catch (SqlException se){
+                throw new Exception("Erro ao tentar mostrar dados" + se.Message);
+            }catch (Exception ex){
+                throw new Exception("Erro inesperado" + ex.Message);
+            } finally{
                 con.Close();
             }
             return topicos;
         }
 
 
-        public bool Cadastro(Topico topico)
-        {
+        public bool Cadastro(Topico topico){
             bool resultado = false;
-            try
-            {
+            try{
                 con = new SqlConnection(conexao);
                 con.Open();
                 cmd = new SqlCommand();
@@ -66,7 +52,7 @@ namespace Forum.Models
                 cmd.CommandText = "Insert into topicoforum(titulo, descricao, datacadastro) values(@t, @des, @dc)";
                 cmd.Parameters.AddWithValue("@t", topico.Titulo);
                 cmd.Parameters.AddWithValue("@des", topico.Descricao);
-                cmd.Parameters.AddWithValue("@dc", topico.DataCadastro);
+                cmd.Parameters.AddWithValue("@dc", DateTime.Now);
 
                 int r = cmd.ExecuteNonQuery();
                 if(r > 0)
@@ -74,35 +60,32 @@ namespace Forum.Models
 
                 cmd.Parameters.Clear();
             } catch(SqlException se){
-                throw new Exception(se.Message);
+                throw new Exception("Erro ao tentar cadastrar dados" +se.Message);
             } catch(Exception e){
-                throw new Exception(e.Message);
+                throw new Exception("Erro inesperado" + e.Message);
             } finally{
                 con.Close();
             }
             return resultado;
         }
 
-        public string Editar(Topico topico){
-            SqlConnection con = new SqlConnection(conexao);
+        public bool Editar(Topico topico){
 
-            string msg;
+            bool resultado = false;
 
             try{
-                SqlCommand cmd = new SqlCommand();
+                con = new SqlConnection(conexao);
+                con.Open();
+                cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandText = "Update topicoforum set titulo = @t, descricao = @des where id = @id";
                 cmd.Parameters.AddWithValue("@t", topico.Titulo);
                 cmd.Parameters.AddWithValue("@des", topico.Descricao);
-                //cmd.Parameters.AddWithValue("@dc", topico.DataCadastro);
                 cmd.Parameters.AddWithValue("@id", topico.Id);
-                con.Open();
+                
                 int r = cmd.ExecuteNonQuery();
-                if(r > 0){
-                    msg = "Atualização Efetuada";
-                } else {
-                    msg = "Não foi possível atualizar";
-                }
+                if(r > 0)
+                    resultado = true;
                 cmd.Parameters.Clear();
             } catch (SqlException se){
                 throw new Exception("Erro ao tentar atualizar dados" + se.Message);
@@ -113,21 +96,19 @@ namespace Forum.Models
                 con.Close();
             }
 
-            return msg;
+            return resultado;
         }
 
-        public bool Apagar(int id)
-        {
+        public bool Apagar(int id){
             bool resultado = false;
-            try
-            {
+            try{
                 con = new SqlConnection(conexao);
                 con.Open();
                 cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "Delete from topicoforum where id = @i";
-                cmd.Parameters.AddWithValue("@i", id);
+                cmd.CommandText = "Delete from topicoforum where id = @id";
+                cmd.Parameters.AddWithValue("@id", id);
 
                 int r = cmd.ExecuteNonQuery();
                 if(r > 0)
@@ -135,9 +116,9 @@ namespace Forum.Models
 
                 cmd.Parameters.Clear();
             } catch(SqlException se){
-                throw new Exception(se.Message);
+                throw new Exception("Erro ao tentar deletar dados" + se.Message);
             } catch(Exception e){
-                throw new Exception(e.Message);
+                throw new Exception("Erro inesperado" + e.Message);
             } finally{
                 con.Close();
             }
