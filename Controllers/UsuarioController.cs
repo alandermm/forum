@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Forum.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,11 @@ namespace Forum.Controllers
         [HttpGet]
         public IEnumerable<Usuario> Get(){
             return dao.Listar();
+        }
+
+        [HttpGet("{id}")]
+        public Usuario GetUsuario(int id){
+            return dao.Listar().Where(x => x.Id == id).FirstOrDefault();
         }
 
     }
