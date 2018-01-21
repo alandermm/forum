@@ -15,10 +15,15 @@ namespace Forum.Controllers
             return dao.Listar(); 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}",Name="TopicoAtual")]
         public Topico GetTopico(int id){
             return dao.Listar().Where(x => x.Id == id).FirstOrDefault();
         }
         
+        [HttpPost]
+        public IActionResult Post([FromBody] Topico topico){
+            dao.Cadastro(topico);
+            return CreatedAtRoute("TopicoAtual", new {id = topico.Id}, topico);
+        }
     }
 }
