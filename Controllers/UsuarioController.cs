@@ -16,10 +16,26 @@ namespace Forum.Controllers
             return dao.Listar();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}",Name="UsuarioAtual")]
         public Usuario GetUsuario(int id){
             return dao.Listar().Where(x => x.Id == id).FirstOrDefault();
         }
 
+        [HttpPost]
+        public IActionResult Post([FromBody] Usuario usuario){
+            dao.Cadastro(usuario);
+            return CreatedAtRoute("UsuarioAtual", new{id = usuario.Id}, usuario);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] Usuario usuario){
+            dao.Editar(usuario);
+            return CreatedAtRoute("UsuarioAtual", new{id = usuario.Id}, usuario);
+        }
+
+        [HttpDelete]
+        public bool Delete(int id){
+            return dao.Apagar(id);
+        }
     }
 }
