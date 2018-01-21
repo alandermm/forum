@@ -37,13 +37,96 @@ namespace Forum.Models
                     });
                 }
             }catch (SqlException se){
-                throw new Exception(se.Message);
+                throw new Exception("Erro ao tentar mostrar dados" +se.Message);
             } catch (Exception e){
-                throw new Exception(e.Message);
+                throw new Exception("Erro inesperado" + e.Message);
             } finally {
                 con.Close();
             }
             return usuarios;
+        }
+
+        public bool Cadastro(Usuario usuario){
+            bool resultado = false;
+            try{
+                con = new SqlConnection(conexao);
+                con.Open();
+                cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "Insert into usuario(nome, login, senha, datacadastro) values (@n, @l, @s, @dc)";
+                cmd.Parameters.AddWithValue("@n", usuario.Nome);
+                cmd.Parameters.AddWithValue("@l", usuario.Login);
+                cmd.Parameters.AddWithValue("@s", usuario.Senha);
+                cmd.Parameters.AddWithValue("@dc", DateTime.Now);
+
+                int r = cmd.ExecuteNonQuery();
+                if(r > 0)
+                    resultado = true;
+
+                cmd.Parameters.Clear();
+            }catch(SqlException se){
+                throw new Exception("Erro ao tentar cadastrar dados" +se.Message);
+            }catch(Exception e){
+                throw new Exception("Erro inesperado" + e.Message);
+            } finally {
+                con.Close();
+            }
+            return resultado;
+        }
+
+        public bool Editar(Usuario usuario){
+            bool resultado = false;
+
+            try{
+                con = new SqlConnection(conexao);
+                con.Open();
+                cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Update usuario set nome = @n, login = @l, senha = @s Where id = @id";
+                cmd.Parameters.AddWithValue("@n", usuario.Nome);
+                cmd.Parameters.AddWithValue("@l", usuario.Login);
+                cmd.Parameters.AddWithValue("@s", usuario.Senha);
+                cmd.Parameters.AddWithValue("@id", usuario.Id);
+                
+                int r = cmd.ExecuteNonQuery();
+
+                if(r > 0)
+                    resultado = true;
+    
+                cmd.Parameters.Clear();
+            }catch(SqlException se){
+                throw new Exception("Erro ao tentar atualizar dados" + se.Message);
+            }catch(Exception e){
+                throw new Exception("Erro inesperado" + e.Message);
+            } finally{
+                con.Close();
+            }
+            return resultado;
+        }
+
+        public bool Apagar(int id){
+            bool resultado = false;
+
+            try{
+                con = new SqlConnection(conexao);
+                con.Open();
+                cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Delete from usuario where id = @id";
+                cmd.Parameters.AddWithValue("@id", id);
+                int r = cmd.ExecuteNonQuery();
+                if(r > 0)
+                    resultado = true;
+                cmd.Parameters.Clear();
+            } catch (SqlException se){
+                throw new Exception("Erro ao tentar deletar dados" + se.Message);
+            } catch (Exception e){
+                throw new Exception("Erro inesperado" + e.Message);
+            } finally {
+                con.Close();
+            }
+            return resultado;
         }
     }
 }
