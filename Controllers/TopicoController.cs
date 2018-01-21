@@ -29,7 +29,13 @@ namespace Forum.Controllers
         [HttpPut]
         public IActionResult Put([FromBody] Topico topico){
             dao.Editar(topico);
-            return CreatedAtRoute("Topicos", new {id = topico.Id}, topico);
+            return CreatedAtRoute("TopicoAtual", new {id = topico.Id}, topico);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id){
+            dao.Apagar(id);
+            return CreatedAtRoute("Topicos", null, null);
         }
 
 
