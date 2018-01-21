@@ -10,7 +10,7 @@ namespace Forum.Controllers
     {
         Topico topico = new Topico();
         DAOTopico dao = new DAOTopico();
-        [HttpGet]
+        [HttpGet(Name = "Topicos")]
         public IEnumerable<Topico> Get(){
             return dao.Listar(); 
         }
@@ -24,6 +24,12 @@ namespace Forum.Controllers
         public IActionResult Post([FromBody] Topico topico){
             dao.Cadastro(topico);
             return CreatedAtRoute("TopicoAtual", new {id = topico.Id}, topico);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] Topico topico){
+            dao.Editar(topico);
+            return CreatedAtRoute("Topicos", null, null);
         }
     }
 }
