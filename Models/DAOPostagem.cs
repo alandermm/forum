@@ -34,9 +34,9 @@ namespace Forum.Models
                     });
                 }
             } catch (SqlException se){
-                throw new Exception(se.Message);
+                throw new Exception("Erro ao tentar listar os dados " + se.Message);
             } catch (Exception e){
-                throw new Exception(e.Message);
+                throw new Exception("Erro inesperado " + e.Message);
             } finally {
                 con.Close();
             }
@@ -44,6 +44,81 @@ namespace Forum.Models
             return postagens;
         }
 
-        
+        public bool Cadastrar(Postagem postagem){
+            bool resultado = false;
+
+            try{
+                con = new SqlConnection(conexao);
+                con.Open();
+                cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Insert into postagem (idtopico, idusuario, mensagem, datapublicacao) values (@idt, @idu, @m, @dp)";
+                cmd.Parameters.AddWithValue("@idt", postagem.IdTopico);
+                cmd.Parameters.AddWithValue("@idu", postagem.IdUsuario);
+                cmd.Parameters.AddWithValue("@m", postagem.Mensagem);
+                cmd.Parameters.AddWithValue("@dp", DateTime.Now);
+                int r = cmd.ExecuteNonQuery();
+                if(r > 0)
+                    resultado = true;
+                cmd.Parameters.Clear();
+            }catch (SqlException se){
+                throw new Exception("Erro ao tentar cadastrar os dados " + se.Message);
+            }catch (Exception e){
+                throw new Exception("Erro inesperado " + e.Message);
+            } finally {
+                con.Close();
+            }
+            return resultado;
+        }
+
+        public bool Editar(Postagem postagem){
+            bool resultado = false;
+
+            try{
+                con = new SqlConnection(conexao);
+                con.Open();
+                cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Update postagem set idtopico = @idt, idusuario = @idu, mensagem = @m Where id = @id";
+                cmd.Parameters.AddWithValue("@idt", postagem.IdTopico);
+                cmd.Parameters.AddWithValue("@idu", postagem.IdUsuario);
+                cmd.Parameters.AddWithValue("@m", postagem.Mensagem);
+                int r = cmd.ExecuteNonQuery();
+                if(r > 0)
+                    resultado = true;
+                cmd.Parameters.Clear();
+            }catch (SqlException se){
+                throw new Exception("Erro ao tentar atualizar os dados " + se.Message);
+            }catch (Exception e){
+                throw new Exception("Erro inesperado " + e.Message);
+            }finally{
+                con.Close();
+            }
+            return resultado;
+        }
+
+        public bool Apagar(int id){
+            bool resultado = false;
+
+            try{
+                con = new SqlConnection(conexao);
+                con.Open();
+                cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = "Delete from postagem Where id = @id";
+                cmd.Parameters.AddWithValue("@id", id);
+                int r = cmd.ExecuteNonQuery();
+                if (r > 0)
+                    return true;
+                cmd.Parameters.Clear();
+            } catch (SqlException se){
+                throw new Exception("Erro ao tentar deletar os dados " + se.Message);
+            } catch (Exception e){
+                throw new Exception("Erro inesperado " + e.Message);
+            } finally {
+                con.Close();
+            }
+            return resultado;
+        }
     }
 }
