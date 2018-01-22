@@ -22,7 +22,7 @@ namespace Forum.Controllers
         
         [HttpPost]
         public IActionResult Post([FromBody] Topico topico){
-            dao.Cadastro(topico);
+            dao.Cadastrar(topico);
             return CreatedAtRoute("TopicoAtual", new {id = topico.Id}, topico);
         }
 

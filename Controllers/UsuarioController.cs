@@ -23,7 +23,7 @@ namespace Forum.Controllers
 
         [HttpPost]
         public IActionResult Post([FromBody] Usuario usuario){
-            dao.Cadastro(usuario);
+            dao.Cadastrar(usuario);
             return CreatedAtRoute("UsuarioAtual", new{id = usuario.Id}, usuario);
         }
 
