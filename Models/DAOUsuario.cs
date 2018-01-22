@@ -37,16 +37,16 @@ namespace Forum.Models
                     });
                 }
             }catch (SqlException se){
-                throw new Exception("Erro ao tentar mostrar dados" +se.Message);
+                throw new Exception("Erro ao tentar mostrar dados " +se.Message);
             } catch (Exception e){
-                throw new Exception("Erro inesperado" + e.Message);
+                throw new Exception("Erro inesperado " + e.Message);
             } finally {
                 con.Close();
             }
             return usuarios;
         }
 
-        public bool Cadastro(Usuario usuario){
+        public bool Cadastrar(Usuario usuario){
             bool resultado = false;
             try{
                 con = new SqlConnection(conexao);
@@ -66,9 +66,9 @@ namespace Forum.Models
 
                 cmd.Parameters.Clear();
             }catch(SqlException se){
-                throw new Exception("Erro ao tentar cadastrar dados" +se.Message);
+                throw new Exception("Erro ao tentar cadastrar dados " +se.Message);
             }catch(Exception e){
-                throw new Exception("Erro inesperado" + e.Message);
+                throw new Exception("Erro inesperado " + e.Message);
             } finally {
                 con.Close();
             }
@@ -96,9 +96,9 @@ namespace Forum.Models
     
                 cmd.Parameters.Clear();
             }catch(SqlException se){
-                throw new Exception("Erro ao tentar atualizar dados" + se.Message);
+                throw new Exception("Erro ao tentar atualizar dados " + se.Message);
             }catch(Exception e){
-                throw new Exception("Erro inesperado" + e.Message);
+                throw new Exception("Erro inesperado " + e.Message);
             } finally{
                 con.Close();
             }
@@ -120,9 +120,9 @@ namespace Forum.Models
                     resultado = true;
                 cmd.Parameters.Clear();
             } catch (SqlException se){
-                throw new Exception("Erro ao tentar deletar dados" + se.Message);
+                throw new Exception("Erro ao tentar deletar dados " + se.Message);
             } catch (Exception e){
-                throw new Exception("Erro inesperado" + e.Message);
+                throw new Exception("Erro inesperado " + e.Message);
             } finally {
                 con.Close();
             }
