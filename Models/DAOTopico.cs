@@ -20,7 +20,7 @@ namespace Forum.Models {
                 cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "Select * from Topico";
+                cmd.CommandText = "Select * from topicoforum";
                 rd = cmd.ExecuteReader();
                 while (rd.Read()){
                     topicos.Add(new Topico(){

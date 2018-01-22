@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.Controllers
 {
-    [Route("usuario/[controller]")]
+    [Route("api/[controller]")]
     public class UsuarioController:Controller
     {
         Usuario usuario = new Usuario();
@@ -33,7 +33,7 @@ namespace Forum.Controllers
             return CreatedAtRoute("UsuarioAtual", new{id = usuario.Id}, usuario);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public bool Delete(int id){
             return dao.Apagar(id);
         }

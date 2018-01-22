@@ -5,14 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.Controllers
 {
-    [Route("topico/[controller]")]
+    [Route("api/[controller]")]
     public class TopicoController:Controller
     {
         Topico topico = new Topico();
         DAOTopico dao = new DAOTopico();
-        [HttpGet(Name = "Topicos")]
+
+        [HttpGet]
         public IEnumerable<Topico> Get(){
-            return dao.Listar(); 
+            return dao.Listar();
         }
 
         [HttpGet("{id}",Name="TopicoAtual")]
@@ -33,9 +34,9 @@ namespace Forum.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id){
-            dao.Apagar(id);
-            return CreatedAtRoute("Topicos", null, null);
+        public bool Delete(int id){
+            return dao.Apagar(id);
+            //return CreatedAtRoute("Topicos", null, null);
         }
 
 

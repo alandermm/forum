@@ -11,7 +11,8 @@ namespace Forum.Models
         SqlCommand cmd = null;
         SqlDataReader rd = null;
 
-        string conexao = @"Data Source .\SQLEXPRESS; initial catalog = Forum; user id=sa; password=senai@123";
+        string conexao = @"Data Source = .\SQLEXPRESS; initial catalog = Forum; user id=sa; password=senai@123";
+        
 
         public List<Postagem> Listar(){
             List<Postagem> postagens = new List<Postagem>();
@@ -52,12 +53,13 @@ namespace Forum.Models
                 con.Open();
                 cmd = new SqlCommand();
                 cmd.Connection = con;
+                cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "Insert into postagem (idtopico, idusuario, mensagem, datapublicacao) values (@idt, @idu, @m, @dp)";
                 cmd.Parameters.AddWithValue("@idt", postagem.IdTopico);
                 cmd.Parameters.AddWithValue("@idu", postagem.IdUsuario);
-                cmd.Parameters.AddWithValue("@m", postagem.Mensagem);
+                cmd.Parameters.AddWithValue("@m", postagem.Mensagem.ToString());
                 cmd.Parameters.AddWithValue("@dp", DateTime.Now);
-                int r = cmd.ExecuteNonQuery();
+                int r = cmd.ExecuteNonQuery();          
                 if(r > 0)
                     resultado = true;
                 cmd.Parameters.Clear();
@@ -82,7 +84,8 @@ namespace Forum.Models
                 cmd.CommandText = "Update postagem set idtopico = @idt, idusuario = @idu, mensagem = @m Where id = @id";
                 cmd.Parameters.AddWithValue("@idt", postagem.IdTopico);
                 cmd.Parameters.AddWithValue("@idu", postagem.IdUsuario);
-                cmd.Parameters.AddWithValue("@m", postagem.Mensagem);
+                cmd.Parameters.AddWithValue("@m", postagem.Mensagem.ToString());
+                cmd.Parameters.AddWithValue("@id", postagem.Id);
                 int r = cmd.ExecuteNonQuery();
                 if(r > 0)
                     resultado = true;
@@ -109,7 +112,7 @@ namespace Forum.Models
                 cmd.Parameters.AddWithValue("@id", id);
                 int r = cmd.ExecuteNonQuery();
                 if (r > 0)
-                    return true;
+                    resultado = true;
                 cmd.Parameters.Clear();
             } catch (SqlException se){
                 throw new Exception("Erro ao tentar deletar os dados " + se.Message);

@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Forum.Controllers
 {
-    [Route("postagem/[controller")]
+    [Route("api/[controller]")]
     public class PostagemController:Controller
     {
         Postagem postagem = new Postagem();
         DAOPostagem dao = new DAOPostagem();
         
-        [HttpGet(Name = "Postagens")]
+        [HttpGet]
         public IEnumerable<Postagem> Get(){
             return dao.Listar();
         }
@@ -22,21 +22,21 @@ namespace Forum.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(Postagem postagem){
+        public IActionResult Post([FromBody] Postagem postagem){
             dao.Cadastrar(postagem);
             return CreatedAtRoute("PostagemAtual", new{id = postagem.Id}, postagem);
         }
 
         [HttpPut]
-        public IActionResult Put(Postagem postagem){
+        public IActionResult Put([FromBody] Postagem postagem){
             dao.Editar(postagem);
             return CreatedAtRoute("PostagemAtual", new{id = postagem.Id}, postagem);
         }
 
-        [HttpDelete]
-        public IActionResult Delete(int id){
-            dao.Apagar(id);
-            return CreatedAtRoute("Postagens", null, null);
+        [HttpDelete("{id}")]
+        public bool Delete(int id){
+            return dao.Apagar(id);
+            //return CreatedAtRoute("Postagens", null, null);
         }
         
     }
