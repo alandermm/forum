@@ -16,9 +16,22 @@ namespace Forum.Controllers
             return dao.Listar();
         }
 
-        [HttpGet("{id}",Name="UsuarioAtual")]
+        /*[HttpGet("{id}",Name="UsuarioAtual")]
         public Usuario GetUsuario(int id){
             return dao.Listar().Where(x => x.Id == id).FirstOrDefault();
+        }*/
+
+        [HttpGet("{id}",Name="UsuarioAtual")]
+        public IActionResult Listar(int id){
+            var rs = new JsonResult(dao.Listar().Where(x => x.Id == id).FirstOrDefault());
+            rs.ContentType = "application/json";
+            if(rs.Value == null){
+                rs.StatusCode = 204;
+                rs.Value = $"Resultado para id: {id} não retornou dados";
+            } else {
+                rs.StatusCode = 200;
+            }
+            return Json(rs);
         }
 
         [HttpPost]
