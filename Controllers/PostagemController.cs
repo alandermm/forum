@@ -38,6 +38,5 @@ namespace Forum.Controllers
             return dao.Apagar(id);
             //return CreatedAtRoute("Postagens", null, null);
         }
-        
     }
 }

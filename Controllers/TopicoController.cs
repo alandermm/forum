@@ -38,7 +38,5 @@ namespace Forum.Controllers
             return dao.Apagar(id);
             //return CreatedAtRoute("Topicos", null, null);
         }
-
-
     }
 }
