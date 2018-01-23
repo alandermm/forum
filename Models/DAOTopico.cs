@@ -15,7 +15,7 @@ namespace Forum.Models {
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "Select * from topicoforum";
-                SqlDataReader rd = cmd.ExecuteReader();
+                rd = cmd.ExecuteReader();
                 while (rd.Read()){
                     topicos.Add(new Topico(){
                         Id = rd.GetInt32(0),

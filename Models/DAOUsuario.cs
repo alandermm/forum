@@ -19,7 +19,7 @@ namespace Forum.Models
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "Select * from usuario";
-                SqlDataReader rd = cmd.ExecuteReader();
+                rd = cmd.ExecuteReader();
                 while(rd.Read()){
                     usuarios.Add(new Usuario(){
                         Id = rd.GetInt32(0),

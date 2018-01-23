@@ -20,7 +20,7 @@ namespace Forum.Models
         /// Objeto utilizado para guardar os retornos do select
         /// realizados nas tabelas do banco de dados
         /// </summary>
-        protected SqlDataReader sdr = null;
+        protected SqlDataReader rd = null;
 
         /// <summary>
         /// O método Path retorna o local do bando de dados.

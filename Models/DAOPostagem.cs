@@ -17,7 +17,7 @@ namespace Forum.Models
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "Select * from postagem";
-                SqlDataReader rd = cmd.ExecuteReader();
+                rd = cmd.ExecuteReader();
                 while(rd.Read()){
                     postagens.Add(new Postagem{
                         Id = rd.GetInt32(0),
