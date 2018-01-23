@@ -5,28 +5,21 @@ using System.Data.SqlClient;
 
 namespace Forum.Models
 {
-    public class DAOUsuario
+    public class DAOUsuario:Conexao
     {
-        SqlConnection con = null;
-
-        SqlCommand cmd = null;
-
-        SqlDataReader rd = null;
-
-        string conexao = @"Data Source = .\SQLEXPRESS; initial catalog = Forum; user id = sa; password=senai@123";
 
         public List<Usuario> Listar(){
             List<Usuario> usuarios = new List<Usuario>();
 
             try{
-                con = new SqlConnection();
-                con.ConnectionString = conexao;
+                con = new SqlConnection(Path());
+                //con.ConnectionString = Path();
                 con.Open();
                 cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "Select * from usuario";
-                rd = cmd.ExecuteReader();
+                SqlDataReader rd = cmd.ExecuteReader();
                 while(rd.Read()){
                     usuarios.Add(new Usuario(){
                         Id = rd.GetInt32(0),
@@ -49,7 +42,8 @@ namespace Forum.Models
         public bool Cadastrar(Usuario usuario){
             bool resultado = false;
             try{
-                con = new SqlConnection(conexao);
+                con = new SqlConnection(Path());
+                //con.ConnectionString = Path();
                 con.Open();
                 cmd = new SqlCommand();
                 cmd.Connection = con;
@@ -79,7 +73,7 @@ namespace Forum.Models
             bool resultado = false;
 
             try{
-                con = new SqlConnection(conexao);
+                con = new SqlConnection(Path());
                 con.Open();
                 cmd = new SqlCommand();
                 cmd.Connection = con;
@@ -109,7 +103,7 @@ namespace Forum.Models
             bool resultado = false;
 
             try{
-                con = new SqlConnection(conexao);
+                con = new SqlConnection(Path());
                 con.Open();
                 cmd = new SqlCommand();
                 cmd.Connection = con;

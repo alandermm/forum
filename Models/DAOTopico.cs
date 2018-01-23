@@ -4,24 +4,18 @@ using System.Data;
 using System.Data.SqlClient;
 
 namespace Forum.Models {
-    public class DAOTopico{
-        SqlConnection con = null;
-        SqlCommand cmd = null;
+    public class DAOTopico:Conexao{
 
-        SqlDataReader rd = null;
-
-        string conexao = @"Data Source = .\SqlExpress; Initial Catalog = Forum; user id=sa;password=senai@123";
         public List<Topico> Listar(){
             List<Topico> topicos = new List<Topico>();
             try{
-                con = new SqlConnection();
-                con.ConnectionString = conexao;
+                con = new SqlConnection(Path());
                 con.Open();
                 cmd = new SqlCommand();
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "Select * from topicoforum";
-                rd = cmd.ExecuteReader();
+                SqlDataReader rd = cmd.ExecuteReader();
                 while (rd.Read()){
                     topicos.Add(new Topico(){
                         Id = rd.GetInt32(0),
@@ -40,11 +34,11 @@ namespace Forum.Models {
             return topicos;
         }
 
-
         public bool Cadastrar(Topico topico){
             bool resultado = false;
+            
             try{
-                con = new SqlConnection(conexao);
+                con = new SqlConnection(Path());
                 con.Open();
                 cmd = new SqlCommand();
                 cmd.Connection = con;
@@ -70,11 +64,10 @@ namespace Forum.Models {
         }
 
         public bool Editar(Topico topico){
-
             bool resultado = false;
 
             try{
-                con = new SqlConnection(conexao);
+                con = new SqlConnection(Path());
                 con.Open();
                 cmd = new SqlCommand();
                 cmd.Connection = con;
@@ -102,7 +95,7 @@ namespace Forum.Models {
         public bool Apagar(int id){
             bool resultado = false;
             try{
-                con = new SqlConnection(conexao);
+                con = new SqlConnection(Path());
                 con.Open();
                 cmd = new SqlCommand();
                 cmd.Connection = con;
