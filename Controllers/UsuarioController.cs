@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Forum.Models;
@@ -35,19 +36,40 @@ namespace Forum.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Usuario usuario){
-            dao.Cadastrar(usuario);
-            return CreatedAtRoute("UsuarioAtual", new{id = usuario.Id}, usuario);
+        public IActionResult Adicionar([FromBody] Usuario usuario){
+            JsonResult rs;
+            try{
+
+                if(!ModelState.IsValid){
+                    return BadRequest(ModelState);
+                }
+                rs = new JsonResult(dao.Cadastrar(usuario));
+                rs.ContentType = "application/json";
+                if(!Convert.ToBoolean(rs.Value)){
+                    rs.StatusCode = 404;
+                    rs.Value = "Ocorreu um erro!";
+                } else {
+                    rs.StatusCode = 200;
+                }
+            } catch (Exception e){
+                rs = new JsonResult("");
+                rs.StatusCode = 204;
+                rs.ContentType = "application/json";
+                rs.Value = e.Message;
+            }
+            /*dao.Cadastrar(usuario);
+            return CreatedAtRoute("UsuarioAtual", new{id = usuario.Id}, usuario);*/
+            return Json(rs);
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Usuario usuario){
+        public IActionResult Editar([FromBody] Usuario usuario){
             dao.Editar(usuario);
             return CreatedAtRoute("UsuarioAtual", new{id = usuario.Id}, usuario);
         }
 
         [HttpDelete("{id}")]
-        public bool Delete(int id){
+        public bool Deletar(int id){
             return dao.Apagar(id);
         }
     }
